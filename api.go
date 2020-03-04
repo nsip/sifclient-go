@@ -7,39 +7,18 @@ import (
     "fmt"
 )
 
-//
-//
-// Notes:
-//
-// * Inputs - minimum
-//     solutionId
-//     applicationKey
-//     userToken
-//     authMethod
-//
-// * Create environment
-//     * Send necessary payload
-//         * Start with TEXT template
-//         * Replace with Struct
-//     * Deal with error on existing environment
-//     * Read existing
-//     * Delete
-//     * Store return data
-//         * Paths etc
-//
-// * GET
-//     * Get single
-//     * Get many
-//     * Dealing with pagination
-//
-//
-// * generateToken
-//     * generateTokenStandard
-//     * generateTokenHMAC256
-//
-// * generateXMLEnvironment
-//
-
 func Info() {
     fmt.Println("SIFCLIENT: Information")
 }
+
+// func Example() {
+//     client := sifclient.New(
+//         "https://hits.nsip.edu.au/SIF3InfraREST/hits/environments/environment",
+//         "9d35716d628a4cdabcb37f61ae7cad4e",
+//     )
+//     client.SetAuthenticationMethod_SIF_HMACSHA256()
+//     client.CreateEnviroment()
+//     school := client.Get("SchoolInfos")
+//     schoolStr := string(school)
+//     fmt.Println("SchoolInfos get", schoolStr)
+//}
