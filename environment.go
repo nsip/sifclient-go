@@ -2,6 +2,7 @@ package sifclient
 import (
     "github.com/nsip/sifdata-go/infrastructure/environment"
     "log"
+    "fmt"
 )
 
 func (s *SIFClientData) GetEnviromentRequest() environment.EnvironmentRequest {
@@ -14,9 +15,11 @@ func (s *SIFClientData) GetEnviromentRequest() environment.EnvironmentRequest {
 
 func (s *SIFClientData) CreateEnviroment() {
     restclient := s.GetClient()
-
+    if s.Debug {
+        fmt.Println("Enviroment URL", s.EnvironmentURL)
+    }
     resp, err := restclient.R().
-    		EnableTrace().
+    		// EnableTrace().
             SetHeader("Content-Type", "application/xml; charset=UTF-8").
             SetBody(s.GetEnviromentRequest()).
             // SetBasicAuth(s.ApplicationKey, s.Password).
@@ -29,22 +32,19 @@ func (s *SIFClientData) CreateEnviroment() {
 		log.Fatal(err)
 	}
 
-    // Explore response object
-    // fmt.Println("Response Info:")
-    // fmt.Println("Error      :", err)
-    // fmt.Println("Status Code:", resp.StatusCode())
-    // fmt.Println("Status     :", resp.Status())
-    // fmt.Println("Time       :", resp.Time())
-    // fmt.Println("Received At:", resp.ReceivedAt())
-    // fmt.Println("Body       :\n", resp)
-    // fmt.Println()
-    // XXX check status and exception
-
     s.LastEnvironment = environment.ParseEnvironmentResponse(resp.Body())
-    // fmt.Println("SessionToken", s.LastEnvironment.SessionToken)
 }
 
 func (s *SIFClientData) GetSessionToken() string {
     // TODO - consider auto CreateEnvironment here if blank
     return s.LastEnvironment.SessionToken
+}
+
+func (s *SIFClientData) GetRequestURL() string {
+    for i := range s.LastEnvironment.InfrastructureServices.InfrastructureService {
+        if s.LastEnvironment.InfrastructureServices.InfrastructureService[i].Name == "requestsConnector" {
+            return s.LastEnvironment.InfrastructureServices.InfrastructureService[i].Text
+        }
+    }
+    return ""
 }

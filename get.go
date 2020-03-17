@@ -8,7 +8,7 @@ import (
 func (s *SIFClientData) Get(what string) []byte {
     restclient := s.GetRequest()
 
-    url := "http://hits.nsip.edu.au/SIF3InfraREST/hits/requests/" + what
+    url := s.GetRequestURL() + "/" + what
 
     resp, err := restclient.Get(url)
 	if err != nil {

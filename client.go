@@ -2,7 +2,7 @@ package sifclient
 
 import (
     "github.com/go-resty/resty"
-    "fmt"
+    // "fmt"
     "crypto/x509"
     "crypto/tls"
     "io/ioutil"
@@ -12,7 +12,7 @@ import (
 func (s *SIFClientData) GetClient() *resty.Client {
     c := resty.New()
     // Config requjired
-    c.SetDebug(true)
+    c.SetDebug(s.Debug)
 
     rootCAs, _ := x509.SystemCertPool()
     if rootCAs == nil {
@@ -43,8 +43,10 @@ func (s *SIFClientData) GetClient() *resty.Client {
 }
 
 func (s *SIFClientData) GetRequest() *resty.Request {
-    r := resty.New().R()
-	r.EnableTrace()
+    r := s.GetClient().R()
+    if s.Debug {
+    	r.EnableTrace()
+    }
     r.SetHeader("Content-Type", "application/xml; charset=UTF-8")
     r.SetHeader("Timestamp", s.Timestamp)
     r.SetHeader("Authorization", s.GetAuthorization())
@@ -54,6 +56,6 @@ func (s *SIFClientData) GetRequest() *resty.Request {
 	r.SetHeader("navigationpage", "1")
 	r.SetHeader("navigationpagesize", "100")
     // XXX debugging
-    fmt.Println("Headers", r.Header)
+    // fmt.Println("Headers", r.Header)
     return r
 }

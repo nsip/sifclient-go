@@ -16,6 +16,7 @@ type SIFClientData struct {
 	Timestamp            string
 	AuthToken            string
     LastEnvironment     environment.EnvironmentResponse
+    Debug               bool
 }
 
 
@@ -41,4 +42,8 @@ func (s *SIFClientData) GetURL() string {
 
 func (s *SIFClientData) SetAuthenticationMethod_SIF_HMACSHA256() {
 	s.AuthenticationMethod = "SIF_HMACSHA256"
+}
+
+func (s *SIFClientData) SetDebug(in bool) {
+	s.Debug = in
 }
