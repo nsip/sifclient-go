@@ -21,6 +21,15 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
+                e.Use(middleware.Gzip())
+                e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+                        AllowOrigins: []string{"*"},
+                        AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
+                        AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
+                })) // allow cors requests during testing
+
+
+
     e.GET("/hits/:id/:provider", func(c echo.Context) error {
         id := c.Param("id")
         provider := c.Param("provider")
