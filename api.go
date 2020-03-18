@@ -4,11 +4,11 @@
 package sifclient
 
 import (
-    "fmt"
+	"fmt"
 )
 
 func Info() {
-    fmt.Println("SIFCLIENT: Information")
+	fmt.Println("SIFCLIENT: Information")
 }
 
 // func Example() {
