@@ -21,25 +21,28 @@
 ###########################
 # STEP 0 Get them certificates
 ############################
-FROM alpine:latest as certs
-RUN apk --no-cache add ca-certificates
+# (note, step 2 is using alpine now) 
+# FROM alpine:latest as certs
 
 ############################
 # STEP 1 build executable binary (go.mod version)
 ############################
-FROM golang:1.14-stretch as builder
+FROM golang:1.15.0-alpine3.12 as builder
+RUN apk --no-cache add ca-certificates
+RUN apk update && apk add git
+RUN apk add gcc g++
 RUN mkdir -p /build
 WORKDIR /build
 COPY . .
 WORKDIR cmd/hitsproxy
-RUN GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /go/bin/server
+RUN go build -o /build/app
 
 ############################
 # STEP 2 build a small image
 ############################
-FROM debian:stretch
-COPY --from=builder /go/bin/server /go/bin/server
+#FROM debian:stretch
+FROM alpine
+COPY --from=builder /build/app /app
 # NOTE - make sure it is the last build that still copies the files
-COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-WORKDIR /go/bin
-CMD ["/go/bin/server"]
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+CMD ["./app"]
