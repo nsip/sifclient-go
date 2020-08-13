@@ -1,7 +1,8 @@
 package sifclient
 
 import (
-	"github.com/go-resty/resty"
+	// "github.com/go-resty/resty"
+	"gopkg.in/resty.v1"
 	// "fmt"
 	"crypto/tls"
 	"crypto/x509"
@@ -44,9 +45,6 @@ func (s *SIFClientData) GetClient() *resty.Client {
 
 func (s *SIFClientData) GetRequest() *resty.Request {
 	r := s.GetClient().R()
-	if s.Debug {
-		r.EnableTrace()
-	}
 	r.SetHeader("Content-Type", "application/xml; charset=UTF-8")
 	r.SetHeader("Timestamp", s.Timestamp)
 	r.SetHeader("Authorization", s.GetAuthorization())
