@@ -2,8 +2,8 @@
 # INSTRUCTIONS
 ############################
 # BUILD: docker build -t nsip/sifclient-go:v0.1.1 .
-# TEST: docker run -it -p3000:3000 nsip/sifclient-go:v0.1.1 .
-# RUN: docker run -d -p3000:3000 nsip/sifclient-go:v0.1.1
+# TEST: docker run -it -p3000:8089 nsip/sifclient-go:v0.1.1 .
+# RUN: docker run -d -p3000:8089 nsip/sifclient-go:v0.1.1
 #
 ###########################
 # EXAMPLE DOCUMENTATION
